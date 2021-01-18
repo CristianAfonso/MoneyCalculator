@@ -16,6 +16,7 @@ public class MoneyCalculator {
     
     private double amount;
     private double exchangeRate;
+    private String currency;
     
     private void control() throws Exception{
         input();
@@ -24,20 +25,22 @@ public class MoneyCalculator {
     }
     
     private void input(){
-        System.out.println("Introduzca una cantidad en dólares: ");
+        System.out.println("Introduce una divisa: ");
         Scanner scanner     = new Scanner(System.in);
+        currency = scanner.next();
+        System.out.println("Introduzca una cantidad en " + currency + ": ");
         amount       = Double.parseDouble(scanner.next());
     }
     
     private void process() throws IOException{
-        exchangeRate = getExchangeRate("USD","EUR");
+        exchangeRate = getExchangeRate(currency,"EUR");
     }
     
     private void output(){
-        System.out.println(amount + " USD equivalen a " + amount*exchangeRate + " EUR");
+        System.out.println(amount + " " + currency + " equivalen a " + amount*exchangeRate + " EUR");
     }
     private static double getExchangeRate(String from, String to) throws IOException{
-        URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from + "_" + to + "&compact=ultra&apiKey=XXX"); 
+        URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from + "_" + to + "&compact=ultra&apiKey=54e783e7998e50874768"); 
         //He tenido que añadir mi key personal porque si no no me hubiera dejado acceder a la api la sustituyo a la hora de subirla con XXX
         URLConnection connection = url.openConnection();
         try (BufferedReader reader =
