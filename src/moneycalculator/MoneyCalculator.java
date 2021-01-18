@@ -16,7 +16,8 @@ public class MoneyCalculator {
     
     private double amount;
     private double exchangeRate;
-    private String currency;
+    private String currencyin;
+    private String currencyout;
     
     private void control() throws Exception{
         input();
@@ -25,19 +26,21 @@ public class MoneyCalculator {
     }
     
     private void input(){
-        System.out.println("Introduce una divisa: ");
+        System.out.println("Introduce una divisa origen: ");
         Scanner scanner     = new Scanner(System.in);
-        currency = scanner.next();
-        System.out.println("Introduzca una cantidad en " + currency + ": ");
+        currencyin = scanner.next();
+        System.out.println("Introduzca una cantidad en " + currencyin + ": ");
         amount       = Double.parseDouble(scanner.next());
+        System.out.println("Introduzca una divisa destino: ");
+        currencyout = scanner.next();
     }
     
     private void process() throws IOException{
-        exchangeRate = getExchangeRate(currency,"EUR");
+        exchangeRate = getExchangeRate(currencyin,currencyout);
     }
     
     private void output(){
-        System.out.println(amount + " " + currency + " equivalen a " + amount*exchangeRate + " EUR");
+        System.out.println(amount + " " + currencyin + " equivalen a " + amount*exchangeRate + " " + currencyout);
     }
     private static double getExchangeRate(String from, String to) throws IOException{
         URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q=" + from + "_" + to + "&compact=ultra&apiKey=54e783e7998e50874768"); 
@@ -46,7 +49,7 @@ public class MoneyCalculator {
         try (BufferedReader reader =
                     new BufferedReader(new InputStreamReader(connection.getInputStream()))){
             String line     = reader.readLine();
-            String line1    = line.substring(line.indexOf(to)+6, line.indexOf("}"));
+            String line1    = line.substring(line.indexOf(to)+5, line.indexOf("}"));
             return Double.parseDouble(line1);
         }
     }
